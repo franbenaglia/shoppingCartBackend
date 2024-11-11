@@ -34,7 +34,7 @@ authRouter.post("/login", async (req, res, next) => {
 
     const isValid = await compare(req.body.password, userExists.password);
 
-    if (!isValid){
+    if (!isValid) {
       return res.status(400).json({ message: "incorrect password" });
     }
 
@@ -62,7 +62,7 @@ authRouter.get(
   async (req, res, next) => {
     try {
       const userExists = await UserModel.findOne({ email: req.body.email });
-      
+
       if (!userExists)
         return res.status(400).json({ message: "user does not exist" });
 
@@ -79,18 +79,23 @@ authRouter.get(
   }
 );
 
-
 authRouter.get(
   "/profileWithJustToken",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
 
-      const header = req.header('Authorization');
+      console.log('profilewithjusttoken');
 
+      const header = req.header('Authorization');
+      console.log('header:' + header);
       const token = header.split(" ")[1];
 
+      console.log('token:' + token);
+
       const payload = jwt.decode(token);
+
+      console.log('payloasd' + payload);
 
       let user;
 

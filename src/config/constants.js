@@ -9,5 +9,7 @@ module.exports = {
     SECRET: process.env.SECRET || "secret",
     FRONT_END_SERVER: process.env.FRONT_END_SERVER || 'http://localhost:8100',
     EMAIL: process.env.EMAIL || 'francisco.arcebenaglia@gmail.com',
-    PASSWORD: process.env.PASSWORD || 'yimo sghw fwwi ylln'
+    PASSWORD: process.env.PASSWORD || 'yimo sghw fwwi ylln',
+    PRIVATE_KEY_STRIPE: process.env.PRIVATE_KEY_STRIPE,
+    PASS_STRIPE: process.env.PASS_STRIPE
 }

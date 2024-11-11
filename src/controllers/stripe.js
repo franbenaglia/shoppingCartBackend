@@ -1,4 +1,45 @@
 const stripe = require('stripe')('');
+const axios = require('axios');
+
+const PRIVATE_KEY_STRIPE = require('../config/constants.js').PRIVATE_KEY_STRIPE;
+const PASS_STRIPE = require('../config/constants.js').PASS_STRIPE;
+
+exports.createIntent = async (req, res) => {
+
+    const amount = req.body.amount;
+    const currency = req.body.currency;
+
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('amount', amount);
+    bodyFormData.append('currency', currency);
+
+    const login = {
+
+        username: PRIVATE_KEY_STRIPE,
+        password: PASS_STRIPE
+
+    };
+
+    const response = await axios({
+        method: "post",
+        url: "https://api.stripe.com/v1/payment_intents",
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+        auth: login
+    })
+
+    console.log(response.data);
+
+    return response.data.CLIENT_SECRET;
+
+}
+
+//axios post
+//este curl es un post con private key y password y amount y currency devuelve un json debes extraer y devolver el client secret
+//curl https://api.stripe.com/v1/payment_intents -u "sk_test_51PuNtUFLZ0CBWG9HbQ9vOPlskdUjWyXYSuDnFFYe3t94hKovTD5FSjXrEW8F6K0bLpCEFyeWrjBz036cjxI26X5z00gAFfLydm" -d amount=1099 -d currency=usd
+//ASH COMPLEJO
+
 
 
 exports.create = async (req, res) => {

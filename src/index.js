@@ -5,6 +5,11 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
+
+const productRoute = require('./routes/product');
+const itemProductRoute = require('./routes/itemsProduct');
+const salesRoute = require('./routes/sales');
+
 const emailRoute = require('./routes/email');
 const stripeRoute = require('./routes/stripe');
 const googleOauth2Route = require('./routes/googleoauth2.js');
@@ -57,10 +62,13 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-
-
-
 app.use('/user', userRoute);
+
+app.use('/sales', salesRoute);
+
+app.use('/product', productRoute);
+
+app.use('/itemproduct', itemProductRoute);
 
 app.use('/payment', stripeRoute);
 

@@ -20,6 +20,7 @@ const opts = {
 passport.use(
   new JWTStrategy(opts, async (payload, done) => {
     try {
+      console.log('JWTStrategy');
       const user = await UserModel.findById(payload._id);   //  id = _id
       if (user) {
         return done(null, user);
@@ -43,6 +44,7 @@ passport.use(
 
   },
     function verify(request, accessToken, refreshToken, profile, cb) {
+      console.log('GoogleStrategy');
       console.log(accessToken);
       console.log(profile);
       UserModel.findOrCreate({
