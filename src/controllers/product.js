@@ -1,4 +1,6 @@
 const ProductModel = require('../models/product');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res) => {
 
@@ -10,7 +12,8 @@ exports.create = async (req, res) => {
         name: req.body.name,
         price: req.body.price,
         imgUrl: req.body.imgUrl,
-        description: req.body.description
+        description: req.body.description,
+        imageDataBase64: req.body.imageDataBase64,
     });
 
     await product.save().then(data => {
@@ -44,6 +47,11 @@ exports.findOne = async (req, res) => {
     }
 };
 
+const generateImageFromBuffer = buffer => {
+    let _buffer = new Buffer.from(buffer, 'base64');
+    return _buffer.toString('base64');
+};
+
 exports.update = async (req, res) => {
 
     if (!req.body) {
@@ -71,7 +79,7 @@ exports.update = async (req, res) => {
 
 exports.destroy = async (req, res) => {
 
-    await ProductModel.findByIdAndRemove(req.params.id).then(data => {
+    await ProductModel.findOneAndDelete({ _id: req.params.id }).then(data => {
         if (!data) {
             res.status(404).send({
                 message: `Product not found.`

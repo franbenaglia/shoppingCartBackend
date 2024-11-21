@@ -9,29 +9,30 @@ exports.createIntent = async (req, res) => {
     const amount = req.body.amount;
     const currency = req.body.currency;
 
-    const bodyFormData = new FormData();
+    const data = {
+        amount: amount,
+        currency: currency
+    };
 
-    bodyFormData.append('amount', amount);
-    bodyFormData.append('currency', currency);
+    const encodedData = new URLSearchParams(data);
 
     const login = {
-
         username: PRIVATE_KEY_STRIPE,
         password: PASS_STRIPE
-
     };
 
     const response = await axios({
-        method: "post",
+        method: "POST",
         url: "https://api.stripe.com/v1/payment_intents",
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-        auth: login
+        data: encodedData,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer " + PRIVATE_KEY_STRIPE
+        },
+        //auth: login
     })
 
-    console.log(response.data);
-
-    return response.data.CLIENT_SECRET;
+    res.status(200).json(response.data.client_secret);
 
 }
 

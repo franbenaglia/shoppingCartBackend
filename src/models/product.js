@@ -14,6 +14,10 @@ var schema = new mongoose.Schema({
         type: String,
         required: false
     },
+    imageDataBase64: {
+        type: String,
+        required: false
+    },
     description: {
         type: String,
 

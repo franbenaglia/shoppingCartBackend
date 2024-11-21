@@ -25,9 +25,8 @@ dotenv.config();
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 const whitelist = ['http://localhost:3100', 'http://localhost:4200', 'http://localhost:8500', 'http://localhost:8100',];
 const corsOptions = {

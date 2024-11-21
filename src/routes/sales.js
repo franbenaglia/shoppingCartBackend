@@ -12,6 +12,8 @@ router.post('/', SalesController.create);
 
 router.patch('/:id', SalesController.update);
 
+router.put('/confirmpayment/:id', SalesController.updatePayment);
+
 router.delete('/:id', SalesController.destroy);
 
 module.exports = router;

@@ -3,6 +3,10 @@ const findOrCreate = require('mongoose-findorcreate');
 const hash = require('bcrypt').hash;
 
 var schema = new mongoose.Schema({
+    _id: {
+        type: String,
+        //required: true,
+    },
     googleId: {
         type: String,
         //required: true,
