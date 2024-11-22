@@ -68,7 +68,10 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const sale = await SaleModel.find();
+        const sale = await SaleModel.find().populate({
+            path: 'itemsProduct',
+            populate: { path: 'product' }
+        });
         res.status(200).json(sale);
     } catch (error) {
         console.log('error:' + error);
