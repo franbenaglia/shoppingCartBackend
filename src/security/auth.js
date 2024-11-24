@@ -16,7 +16,7 @@ authRouter.post("/register", async (req, res, next) => {
       lastName: req.body.lastName,
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "user created",
       user: { email: user.email, id: user._id },
     });
@@ -28,9 +28,13 @@ authRouter.post("/register", async (req, res, next) => {
 
 authRouter.post("/login", async (req, res, next) => {
   try {
+
+
     const userExists = await UserModel.findOne({ email: req.body.email });
-    if (!userExists)
+
+    if (!userExists) {
       return res.status(400).json({ message: "user does not exist" });
+    }
 
     const isValid = await compare(req.body.password, userExists.password);
 
@@ -85,23 +89,19 @@ authRouter.get(
   async (req, res, next) => {
     try {
 
-      console.log('profilewithjusttoken');
-
       const header = req.header('Authorization');
-      console.log('header:' + header);
+
       const token = header.split(" ")[1];
 
-      console.log('token:' + token);
-
       const payload = jwt.decode(token);
-
-      console.log('payloasd' + payload);
 
       let user;
 
       if (payload.email) {
+        //logged by email
         user = payload
-      } else {
+      } else { 
+        //social login
         user = payload.user;
       }
 

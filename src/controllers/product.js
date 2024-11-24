@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res) => {
-
+    
     if (!req.body.name && !req.body.price) {
         res.status(400).send({ message: "Content can not be empty!" });
     }

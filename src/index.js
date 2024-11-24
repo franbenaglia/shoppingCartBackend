@@ -36,10 +36,12 @@ const corsOptions = {
         } else {
             callback(new Error('Not allowed by CORS'))
         }
-    }
+    },
+    //credentials: true
 }
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
+//app.use(cors());
 
 app.use(session({
     secret: 'thesessionsecret',
@@ -59,6 +61,13 @@ mongoose.connect(dbConfig.url, {
 }).catch(err => {
     console.log('Could not connect to the database', err);
     process.exit();
+});
+
+app.use((req, res, next) => {
+    //res.append('Access-Control-Allow-Credentials', true);
+    //res.header('Access-Control-Allow-Credentials', true);
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
 });
 
 app.use('/user', userRoute);
