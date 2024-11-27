@@ -2,8 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
+const conn = require("./mongoose/config");  // not delete this line is used
 const userRoute = require('./routes/user');
 
 const productRoute = require('./routes/product');
@@ -23,7 +22,6 @@ const PORT = require('./config/constants').PORT;
 const session = require('express-session');
 
 //const job = require('./process/scheduledTask');
-
 
 dotenv.config();
 
@@ -55,24 +53,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-mongoose.Promise = global.Promise;
-
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log("Mongodb database Connected Successfully!!");
-}).catch(err => {
-    console.log('Could not connect to the database', err);
-    process.exit();
-});
-
-app.use((req, res, next) => {
-    //res.append('Access-Control-Allow-Credentials', true);
-    //res.header('Access-Control-Allow-Credentials', true);
-    //res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
 
 //job.job();
 
