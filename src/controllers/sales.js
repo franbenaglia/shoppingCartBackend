@@ -1,6 +1,67 @@
 const SaleModel = require('../models/sale');
 const UserModel = require('../models/user');
 const ItemsProductModel = require('../models/itemsProduct');
+const conn = require("../mongoose/config");
+
+exports.createtx = async (req, res) => {
+
+    if (!req.body) {
+        res.status(400).send({
+            message: "Data can not be empty!"
+        });
+    }
+
+    const itemProducts = req.body.itemsProduct;
+
+    const ips = [];
+
+    try {
+
+        const user = await UserModel.find({ email: req.body.user.email });
+
+        const session = await conn.startSession();
+
+        await session.withTransaction(async () => {
+
+
+            for (let i = 0; i < itemProducts.length; i++) {
+
+                const data = await ItemsProductModel.create([
+                    {
+                        quantity: itemProducts[i].quantity,
+                        product: itemProducts[i].product._id,
+                    }
+                ], { session });
+
+                ips.push(data._id);
+
+            }
+
+            await SaleModel.create([
+                {
+                    user: user[0]._id,
+                    itemsProduct: ips,
+                }
+            ], { session });
+
+
+        });
+
+        session.endSession();
+
+        res.send({
+            message: "Sale created successfully!!",
+            sale: data
+        });
+
+    } catch (error) {
+        console.log('error:' + error);
+        res.status(500).send({
+            message: error.message || "Some error occurred while creating sale"
+        });
+
+    }
+};
 
 exports.create = async (req, res) => {
 
@@ -11,10 +72,6 @@ exports.create = async (req, res) => {
     }
 
     const itemProducts = req.body.itemsProduct;
-
-    // if (!req.body.email) {
-    //     req.body.email = 'fj.benaglia@gmail.com';
-    // }
 
     const ips = [];
 
