@@ -10,6 +10,8 @@ const productRoute = require('./routes/product');
 const itemProductRoute = require('./routes/itemsProduct');
 const salesRoute = require('./routes/sales');
 
+const stockRoute = require('./routes/stock');
+
 const emailRoute = require('./routes/email');
 const stripeRoute = require('./routes/stripe');
 const googleOauth2Route = require('./routes/googleoauth2.js');
@@ -19,6 +21,8 @@ const cookieSession = require('cookie-session');
 const passport = require('./security/passport.js');
 const PORT = require('./config/constants').PORT;
 const session = require('express-session');
+
+//const job = require('./process/scheduledTask');
 
 
 dotenv.config();
@@ -70,11 +74,15 @@ app.use((req, res, next) => {
     next();
 });
 
+//job.job();
+
 app.use('/user', userRoute);
 
 app.use('/sales', salesRoute);
 
 app.use('/product', productRoute);
+
+app.use('/stock', stockRoute);
 
 app.use('/itemproduct', itemProductRoute);
 

@@ -10,17 +10,17 @@ exports.create = async (req, res) => {
         });
     }
 
-    const itemProducts = req.body.itemProducts;
+    const itemProducts = req.body.itemsProduct;
 
-    if (!req.body.email) {
-        req.body.email = 'fj.benaglia@gmail.com';
-    }
+    // if (!req.body.email) {
+    //     req.body.email = 'fj.benaglia@gmail.com';
+    // }
 
     const ips = [];
 
     try {
 
-        const user = await UserModel.find({ email: req.body.email });
+        const user = await UserModel.find({ email: req.body.user.email });
 
         for (let i = 0; i < itemProducts.length; i++) {
 
@@ -81,7 +81,22 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
     try {
+        console.log('negrodemmmmmmmmmmmmmmmmmmmmmm');
+        console.log(req.params.id);
         const sale = await SaleModel.findById(req.params.id);
+        res.status(200).json(sale);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
+exports.findOneByUser = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.id);
+        const sale = await SaleModel.find({ user: user._id }).populate({
+            path: 'itemsProduct',
+            populate: { path: 'product' }
+        });
         res.status(200).json(sale);
     } catch (error) {
         res.status(404).json({ message: error.message });

@@ -22,6 +22,7 @@ var schema = new mongoose.Schema({
         type: String,
 
     },
+    stock: { type: mongoose.Schema.ObjectId, ref: "Stock" },
 });
 
 

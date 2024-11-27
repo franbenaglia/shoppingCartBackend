@@ -8,6 +8,8 @@ router.get('/', SalesController.findAll);
 
 router.get('/:id', SalesController.findOne);
 
+router.get('/byuser/:id', SalesController.findOneByUser);
+
 router.post('/', SalesController.create);
 
 router.patch('/:id', SalesController.update);

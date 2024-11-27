@@ -1,12 +1,31 @@
 const ProductModel = require('../models/product');
+const StockModel = require('../models/stock');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res) => {
-    
+
     if (!req.body.name && !req.body.price) {
         res.status(400).send({ message: "Content can not be empty!" });
     }
+
+    const stock = new StockModel({
+        total: req.body.stock.free,
+        free: req.body.stock.free,
+        reserved: 0,
+        buyed: 0,
+    });
+
+    let stockId;
+
+    await stock.save().then(data => {
+        stockId = data._id;
+    }).catch(err => {
+        console.log(err);
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating product-stock"
+        });
+    });
 
     const product = new ProductModel({
         name: req.body.name,
@@ -14,6 +33,7 @@ exports.create = async (req, res) => {
         imgUrl: req.body.imgUrl,
         description: req.body.description,
         imageDataBase64: req.body.imageDataBase64,
+        stock: stockId,
     });
 
     await product.save().then(data => {
@@ -40,7 +60,7 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
     try {
-        const product = await ProductModel.findById(req.params.id);
+        const product = await ProductModel.findById(req.params.id).populate('stock');
         res.status(200).json(product);
     } catch (error) {
         res.status(404).json({ message: error.message });
