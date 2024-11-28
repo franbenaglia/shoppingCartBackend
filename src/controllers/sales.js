@@ -102,7 +102,6 @@ exports.create = async (req, res) => {
         });
 
         await sale.save().then(data => {
-            console.log('datasaved:' + data);
             res.send({
                 message: "Sale created successfully!!",
                 sale: data
@@ -138,8 +137,6 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = async (req, res) => {
     try {
-        console.log('negrodemmmmmmmmmmmmmmmmmmmmmm');
-        console.log(req.params.id);
         const sale = await SaleModel.findById(req.params.id);
         res.status(200).json(sale);
     } catch (error) {

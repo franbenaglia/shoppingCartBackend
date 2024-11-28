@@ -11,5 +11,6 @@ module.exports = {
     EMAIL: process.env.EMAIL || 'francisco.arcebenaglia@gmail.com',
     PASSWORD: process.env.PASSWORD || 'yimo sghw fwwi ylln',
     PRIVATE_KEY_STRIPE: process.env.PRIVATE_KEY_STRIPE,
-    PASS_STRIPE: process.env.PASS_STRIPE
+    PASS_STRIPE: process.env.PASS_STRIPE,
+    RECEIPT_MAIL: process.env.RECEIPT_MAIL || 'fbenaglia@hotmail.com',
 }

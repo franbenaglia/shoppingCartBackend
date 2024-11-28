@@ -1,7 +1,6 @@
 const ProductModel = require('../models/product');
 const StockModel = require('../models/stock');
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res) => {
 
@@ -51,7 +50,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const products = await ProductModel.find();
+        const products = await ProductModel.find().populate('stock');
         res.status(200).json(products);
     } catch (error) {
         res.status(404).json({ message: error.message });
